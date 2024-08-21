@@ -28,17 +28,20 @@ function makeGame(player1Name, player2Name) {
     const Player1 = makePlayer(player1Name, "X");
     const Player2 = makePlayer(player2Name, "O");
     let currentTurn = 0;
+    let turnCount = 0;
     const playTurn = (X, Y) => {
         if (currentTurn == 0) {
             let correct = Player1.placeYourMarker(X, Y, board);
             if (correct) {
                 currentTurn = 1;
+                turnCount++;
                 var victor = checkForWin();
             }
         } else if (currentTurn == 1) {
             let correct = Player2.placeYourMarker(X, Y, board)
             if (correct) {
                 currentTurn = 0;
+                turnCount++;
                 var victor = checkForWin();
             }
         }
@@ -78,7 +81,10 @@ function makeGame(player1Name, player2Name) {
             } else if (Ocount == 3) {
                 return 2
             }
-        };
+        }
+        if (turnCount == 9) {
+            return 3;
+        }
         return null;
     }
 
@@ -87,15 +93,25 @@ function makeGame(player1Name, player2Name) {
             console.log(`${Player1.PlayerName} wins!!!`)
         } else if (victor == 2) {
             console.log(`${Player2.PlayerName} wins!!!`)
+        } else if (victor == 3) {
+            console.log("It's a draw")
         }
+        // this will be changed
         board = makeGameBoard();
         currentTurn = 0;
+        turnCount = 0;
+    }
+    
+    const getTurnCount = () => {
+        return turnCount
     }
 
-    return {getBoard, playTurn, checkForWin}
+    return {getBoard, playTurn, checkForWin, getTurnCount, turnCount}
 }
 
-let game = makeGame("UltraMinus1", "tester");
+
+
+
 
 
 
